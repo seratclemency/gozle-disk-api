@@ -11,3 +11,9 @@ Soon:
 Uploading files.
 
 To use the get_info_profile function you must pass the required user_api argument. This is your personal api for your account of this type: https://disk.gozle.com.tm/api/v1/users/1234/. You must find out this address yourself in the developer console by analyzing all network requests.
+
+To authorize, you must activate this code. It is executed once.
+
+```python
+gozle_disk.auth('email', 'password')
+```
