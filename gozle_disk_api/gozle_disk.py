@@ -9,8 +9,8 @@ class gozle_disk:
         driver = uc.Chrome(headless=True)
         print('Logged in to the site')
         driver.get('https://disk.gozle.com.tm/login')
-        username_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/div[1]/div/input')
-        password_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/div[2]/div[2]/input')
+        username_button = driver.find_element(By.ID, ':r0:')
+        password_button = driver.find_element(By.ID, ':r1:')
         continue_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/button')
         time.sleep(2)
         username_button.send_keys(email)
@@ -32,8 +32,8 @@ class gozle_disk:
         driver = uc.Chrome(headless=True)
         print('Logged in to the site')
         driver.get('https://disk.gozle.com.tm/login')
-        username_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/div[1]/div/input')
-        password_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/div[2]/div[2]/input')
+        username_button = driver.find_element(By.ID, ':r0:')
+        password_button = driver.find_element(By.ID, ':r1:')
         continue_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/button')
         time.sleep(2)
         username_button.send_keys(email)
@@ -66,34 +66,16 @@ class gozle_disk:
         responce = requests.get('https://disk.gozle.com.tm/api/v1/user/space-usage', headers=headers)
         if responce.status_code == 403:
             try:
-                print('Cookies are out of date. We begin to re-login')
+                print('Cookies are out of date. We begin to re-login. After this action please restart the function.')
                 with open('data.txt', 'r', encoding='utf-8') as file:
                     lines = file.readlines()
                     email = lines[0]
                     password = lines[1]
                 gozle_disk.auth_if_outdate(email, password)
-                gozle_disk.get_account_space_usage_info()
-                json_data = responce.json()
-                used = json_data['used']
-                available = json_data['available']
-                status = json_data['status']
-                seo = json_data['seo']
-                print(f'Used: {used} bytes')
-                print(f'Available: {available} bytes')
-                print(f'Status: {status}')
-                print(f'Seo: {seo}')
             except:
                 pass
         else:
-            json_data = responce.json()
-            used = json_data['used']
-            available = json_data['available']
-            status = json_data['status']
-            seo = json_data['seo']
-            print(f'Used: {used} bytes')
-            print(f'Available: {available} bytes')
-            print(f'Status: {status}')
-            print(f'Seo: {seo}')
+            print(responce.json())
 
 
     def get_info_profile(user_api):
@@ -112,12 +94,14 @@ class gozle_disk:
         }
         responce = requests.get(user_api, headers=headers)
         if responce.status_code == 403:
-            print('Cookies are out of date. We begin to re-login')
+            print('Cookies are out of date. We begin to re-login. After this action please restart the function.')
             with open('data.txt', 'r', encoding='utf-8') as file:
                 lines = file.readlines()
                 email = lines[0]
                 password = lines[1]
             gozle_disk.auth_if_outdate(email, password)
-            gozle_disk.get_info_profile(user_api)
         else:
             print(responce.json())
+
+
+gozle_disk.get_info_profile('https://disk.gozle.com.tm/api/v1/users/5473/')
