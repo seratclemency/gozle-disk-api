@@ -102,6 +102,3 @@ class gozle_disk:
             gozle_disk.auth_if_outdate(email, password)
         else:
             print(responce.json())
-
-
-gozle_disk.get_info_profile('https://disk.gozle.com.tm/api/v1/users/5473/')
