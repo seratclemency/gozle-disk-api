@@ -28,7 +28,7 @@ class gozle_disk:
         print('You are logged in')
         driver.quit()
 
-    def auth_if_outdate(email, password):
+    def __auth_if_outdate(email, password):
         driver = uc.Chrome(headless=True)
         print('Logged in to the site')
         driver.get('https://disk.gozle.com.tm/login')
@@ -71,7 +71,7 @@ class gozle_disk:
                     lines = file.readlines()
                     email = lines[0]
                     password = lines[1]
-                gozle_disk.auth_if_outdate(email, password)
+                gozle_disk.__auth_if_outdate(email, password)
             except:
                 pass
         else:
@@ -99,6 +99,6 @@ class gozle_disk:
                 lines = file.readlines()
                 email = lines[0]
                 password = lines[1]
-            gozle_disk.auth_if_outdate(email, password)
+            gozle_disk.__auth_if_outdate(email, password)
         else:
             print(responce.json())
