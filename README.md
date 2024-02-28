@@ -16,7 +16,11 @@ To use the get_info_profile function you must pass the required user_api argumen
 
 Log in to your account, press f12, go to the Network tab and reload the page. Find the API shown in the screenshot (4 digits at the end will be different)
 
-To authorize, you must activate this code. It is executed once.
+## Installation
+
+Import: ```from gozle_disk_api import gozle_disk```
+
+To authorize, you must activate this code. It is executed once, after which you will have 2 files created, these are cookies.txt and data.txt. You don't need to touch these files.
 
 ```python
 gozle_disk.auth('email', 'password')
