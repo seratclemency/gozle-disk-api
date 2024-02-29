@@ -1,24 +1,28 @@
 import requests, json, time
 from fake_useragent import UserAgent
-import undetected_chromedriver as uc
+from seleniumbase import Driver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class gozle_disk:
+    space_usage_api = 'https://disk.gozle.com.tm/api/v1/user/space-usage'
+
+
     def auth(email, password):
-        driver = uc.Chrome(headless=True)
+        driver = Driver(uc=True, headless=True)
         print('Logged in to the site')
         driver.get('https://disk.gozle.com.tm/login')
-        username_button = driver.find_element(By.ID, ':r0:')
-        password_button = driver.find_element(By.ID, ':r1:')
-        continue_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/button')
-        time.sleep(2)
+        username_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#\:r0\:')))
+        password_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#\:r1\:')))
+        continue_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#root > main > div.rounded-lg.max-w-440.px-40.pt-40.pb-32.w-full.mx-auto.bg-paper.shadow.md\:shadow-xl > form > button')))
         username_button.send_keys(email)
         print('Sent an email')
         password_button.send_keys(password)
         print('Sent a password')
         continue_button.click()
-        time.sleep(5)
+        time.sleep(1)
         cookies = driver.get_cookies()
         with open('cookies.txt', 'w') as f:
             for cookie in cookies:
@@ -29,19 +33,18 @@ class gozle_disk:
         driver.quit()
 
     def __auth_if_outdate(email, password):
-        driver = uc.Chrome(headless=True)
+        driver = Driver(uc=True, headless=True)
         print('Logged in to the site')
         driver.get('https://disk.gozle.com.tm/login')
-        username_button = driver.find_element(By.ID, ':r0:')
-        password_button = driver.find_element(By.ID, ':r1:')
-        continue_button = driver.find_element(By.XPATH, '/html/body/div/main/div[1]/form/button')
-        time.sleep(2)
+        username_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#\:r0\:')))
+        password_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#\:r1\:')))
+        continue_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'#root > main > div.rounded-lg.max-w-440.px-40.pt-40.pb-32.w-full.mx-auto.bg-paper.shadow.md\:shadow-xl > form > button')))
         username_button.send_keys(email)
         print('Sent an email')
         password_button.send_keys(password)
         print('Sent a password')
         continue_button.click()
-        time.sleep(5)
+        time.sleep(1)
         cookies = driver.get_cookies()
         with open('cookies.txt', 'w') as f:
             for cookie in cookies:
@@ -63,7 +66,7 @@ class gozle_disk:
             "Referer": "https://disk.gozle.com.tm/drive",
             "User-Agent": ua.random
         }
-        responce = requests.get('https://disk.gozle.com.tm/api/v1/user/space-usage', headers=headers)
+        responce = requests.get(gozle_disk.space_usage_api, headers=headers)
         if responce.status_code == 403:
             try:
                 print('Cookies are out of date. We begin to re-login. After this action please restart the function.')
